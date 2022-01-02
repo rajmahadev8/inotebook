@@ -17,7 +17,7 @@ const AddNote = () => {
     return (
         <div>
             <div className="container my-5 d-flex flex-column align-items-center">
-                <h3>Add a Note</h3>
+                <h3 className='text-3xl  font-bold	mb-4'>Add a Note</h3>
                 <form style={{ width: "70%", display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div className="container">
                         <div className="mb-3 ">
