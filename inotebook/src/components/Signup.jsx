@@ -1,18 +1,42 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import TextField from '@mui/material/TextField'
-import img from './iNotebook.gif'
+import gif from './iNotebook.gif'
+import img from './iNotebook.png'
 
 const Signup = () => {
+    const host = "http://localhost:4000"
+    let history =   useHistory();
+    const [credentials, setCredentials] = useState({name:"", email:"", password:"", cpassword:""})
+    const signup = async(e)=>{
+        e.preventDefault();
+        const response = await fetch(`${host}/api/auth/createuser`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({name:credentials.name, email:credentials.email, password: credentials.password})
+          });
+          const json = await response.json(); 
+          console.log(json);
+          if(json.success){
+              //redirect
+              localStorage.setItem('token', json.authToken);
+              history.push('/')
+          }
+        }
+    const onChange = (e)=>{
+        setCredentials({...credentials, [e.target.name]:e.target.value})
+    }
     return (
-        <div className=''>
+        <div className='' style={{backgroundImage:`url(${img})`, backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
         <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{height: "89vh"}}>
-            <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 ">
+            <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 bg-white ">
                 <div>
                     <img
                         className="mx-auto h-20 w-auto"
-                        src={img}
+                        src={gif}
                         alt="Workflow"
                     />
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign Up</h2>
@@ -23,68 +47,40 @@ const Signup = () => {
                         </Link>
                     </p>
                 </div>
-                <form className="mt-8 space-y-6  " action="#" method="POST">
+                <form className="mt-8 space-y-6  " action="#" method="POST" onSubmit={signup}>
                     <input type="hidden" name="remember" defaultValue="true" />
                     <div className="-space-y-px">
-                    <div className='mb-3'>
-                            {/* <label htmlFor="name" className="sr-only">
-                              Name
-                            </label>
-                            <input
-                                id="name"
-                                name="name"
-                                type="text"
-                                autoComplete="name"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-4 py-2.5 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 m:text-m"
-                                placeholder="Name"
-                            /> */}
-                            <TextField fullWidth name="Name" label="Name" id="Name" />
-
+                        <div className='mb-3'>
+                           <TextField fullWidth name="name" label="Name" onChange={onChange} required id="Name" value={credentials.name}/>
                         </div>
                         <div className='mb-3'> 
-                            {/* <label htmlFor="email-address" className="sr-only">
-                                Email address
-                            </label>
-                            <input
-                                id="email-address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-4 py-2.5 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 m:text-m"
-                                placeholder="Email address"
-                            /> */}
-                            <TextField fullWidth name="Email" label="Email" id="Email" />
+                            <TextField fullWidth name="email" label="Email" onChange={onChange} required id="Email" value={credentials.email}/>
                         </div>
-                        <div>
-                            {/* <label htmlFor="password" className="sr-only">
-                                Password
-                            </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                className="appearance-none rounded-none relative block w-full px-4 py-2.5 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 m:text-m"
-                                placeholder="Password"
-
-                            /> */}
+                        <div className='mb-3'>
                             <TextField
                                 fullWidth
+                                name="password"
+                                inputProps={{ minLength: 5 }}
+                                required
                                 id="outlined-password-input"
                                 label="Password"
                                 type="password"
+                                value={credentials.password}
+                                onChange={onChange}
                                 autoComplete="current-password"
                             />
                         </div>
                         <div>
                             <TextField
                                 fullWidth
+                                name="cpassword"
+                                nputProps={{ minLength: 5 }}
+                                required
                                 id="outlined-password-input"
                                 label="Confirm Password"
                                 type="password"
+                                value={credentials.cpassword}
+                                onChange={onChange}
                                 autoComplete="current-password"
                             />
                         </div>

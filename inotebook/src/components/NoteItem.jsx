@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
+import img from './notes.png'
 // import UpdateNotes from './UpdateNotes';
 
 const NoteItem = (props) => {
@@ -30,7 +31,8 @@ const NoteItem = (props) => {
         // <Card variant="outlined">{note.title}</Card>
 
         // </div>
-        <Card sx={{ width: 250, m: 3 }}>
+        <Card sx={{ width: 250, m: 3}} >
+            <img src={img} alt="note" className='absolute' style={{width: "120px", marginLeft: "180px"}}/>
             <CardContent>
                 <Typography sx={{ fontSize: 21 }} color="text.secondary" gutterBottom>
                     {notes.title}

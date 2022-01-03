@@ -40,7 +40,8 @@ router.post('/createuser', [body('name').isLength({ min: 3 }),
                 }
             }
             const authToken = jwt.sign(data, JWT_SECRET)
-            res.json({authToken});
+            success = true;
+            res.json({success, authToken});
         }
 
         catch (error) {
