@@ -6,6 +6,7 @@ const User = require('../models/User');
 var jwt = require('jsonwebtoken');
 var fetchuser = require('../middleware/fetchuser');
 const JWT_SECRET = "iNotebook"
+let success=false;
 
 //Route 1 :- Create a user using: POST "/api/auth/createuser". No Login Required
 router.post('/createuser', [body('name').isLength({ min: 3 }),
@@ -53,6 +54,7 @@ router.post('/createuser', [body('name').isLength({ min: 3 }),
 router.post('/login', [body('email', 'Enter a Valid Email').isEmail(),
                             body('password', 'Password Cannot be Blank').isLength({ min: 5 })],
         async (req,res)=>{
+
          //If there are errors return Bad request and errors
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -62,11 +64,11 @@ router.post('/login', [body('email', 'Enter a Valid Email').isEmail(),
             try {
                 let user = await User.findOne({email});
                 if (!user) {
-                    return res.status(400).json({ error: "Please try login with correct credentials" });
+                    return res.status(400).json({ success, error: "Please try login with correct credentials" });
                 }
                 const passwordCompare = await bcrypt.compare(password,user.password);
                 if(!passwordCompare){
-                    return res.status(400).json({ error: "Please try login with correct credentials" });
+                    return res.status(400).json({ success, error: "Please try login with correct credentials" });
                 }
 
                 const data = {
@@ -75,7 +77,8 @@ router.post('/login', [body('email', 'Enter a Valid Email').isEmail(),
                     }
                 }
                 const authToken = jwt.sign(data, JWT_SECRET);
-                res.json({authToken});
+                success = true;
+                res.json({success,authToken});
 
             } catch (error) {
                 console.error(error.message);
