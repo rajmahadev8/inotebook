@@ -2,6 +2,8 @@ import React, { useEffect, Fragment } from 'react'
 import { Link, useLocation } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+
+
 export const Navbar = () => {
     let location = useLocation();
     useEffect(() => {
@@ -11,7 +13,9 @@ export const Navbar = () => {
         { name: 'Home', href: '/', current: true },
         { name: 'About', href: '/about', current: false },
     ]
-
+    const signout=()=>{
+        localStorage.removeItem('token');
+    }
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
@@ -63,24 +67,10 @@ export const Navbar = () => {
                                             src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
                                             alt="Workflow"
                                         /> */}
-                                        <Link className="navbar-brand text-stone-300 hover:text-white" style={{ textDecoration: 'none' }} to="/">iNotebook</Link>
+                                        <Link to="/" className="navbar-brand text-stone-300 hover:text-white" style={{ textDecoration: 'none' }} >iNotebook</Link>
                                     </div>
                                     <div className="hidden sm:block sm:ml-6">
                                         <div className="flex space-x-4">
-                                            {/* {navigation.map((item) => (
-                                                <Link
-                                                    key={item.name}
-                                                    href={item.href}
-                                                    className={classNames(
-                                                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                        'px-3 py-2 rounded-md text-sm font-medium'
-                                                    )}
-                                                    aria-current={item.current ? 'page' : undefined}
-                                                >
-                                                    {item.name}
-                                                </a>
-                                            ))} */}
-
                                             <Link className={`px-3 py-2 rounded-md text-sm font-medium ${location.pathname === "/" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"}`} aria-current="page" to="/">Home</Link>
                                             <Link className={`px-3 py-2 rounded-md text-sm font-medium ${location.pathname === "/about" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"}`} to="/about">About</Link>
                                         </div>
@@ -120,7 +110,7 @@ export const Navbar = () => {
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <Link
-                                                            href="#"
+                                                            to="/"
                                                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                         >
                                                             Your Profile
@@ -130,7 +120,7 @@ export const Navbar = () => {
                                                 <Menu.Item>
                                                     {({ active }) => (
                                                         <Link
-                                                            href="#"
+                                                            to="/"
                                                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                         >
                                                             Settings
@@ -141,6 +131,7 @@ export const Navbar = () => {
                                                     {({ active }) => (
                                                         <Link
                                                             to="/login"
+                                                            onClick={signout}
                                                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                         >
                                                             Sign out

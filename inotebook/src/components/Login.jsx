@@ -6,10 +6,15 @@ import gif from './iNotebook.gif'
 import img from './iNotebook.png'
 
 const Login = () => {
+    // const [alert, setAlert] = useState({enable:false})
+    // const [validation, setValidation] = useState({emailError:"",passwordError:""})
     const host = "http://localhost:4000"
     let history =   useHistory();
     const [credentials, setCredentials] = useState({email:"",password:""})
     const login = async(e)=>{
+        // if(!alert.enable){
+        //     setAlert({enable:true})
+        // }else{setAlert({enable:false})}
         e.preventDefault();
         const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST',
@@ -24,7 +29,19 @@ const Login = () => {
               //redirect
               localStorage.setItem('token', json.authToken);
               history.push('/')
-
+          }
+          else{
+            //   if(!json.errors[0].msg){
+            //     console.log(json.errors[0].msg)
+            //     setValidation({emailError:json.errors[0].msg})
+            //   }else if(!json.errors[1].msg){
+            //     console.log(json.errors[1].msg)
+            //     setValidation({passwordError:json.errors[1].msg})
+            //   }else{
+            //     console.log(json.errors[0].msg, json.errors[1].msg )
+            //     setValidation({emailError:json.errors[0].msg, passwordError:json.errors[1].msg})
+            //   }
+            //   console.log(json.errors[0].msg,json.errors[1].msg)
           }
         }
     const onChange = (e)=>{
@@ -54,12 +71,12 @@ const Login = () => {
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="-space-y-px">
                             <div className='mb-3'>
-                                <TextField fullWidth name="email" label="Email" id="Email" value={credentials.email}  onChange={onChange}/>
+                                <TextField  fullWidth name="email" label="Email" id="Email" value={credentials.email}  onChange={onChange}/>
                             </div>
                             <div>
                                 <TextField
                                     fullWidth
-                                    // error = {credentials.password===""?true:false}
+                                    // error = {alert.enable}
                                     name="password"
                                     id="outlined-password-input"
                                     label="Password"
@@ -67,6 +84,7 @@ const Login = () => {
                                     value={credentials.password}
                                     autoComplete="current-password"
                                     onChange={onChange}
+                                    // helperText={validation.passwordError}
                                 />
                             </div>
                         </div>
@@ -85,7 +103,7 @@ const Login = () => {
                             </div> */}
 
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-sky-600 hover:text-sky-500	">
+                                <a href="/" className="font-medium text-sky-600 hover:text-sky-500	">
                                     Forgot your password?
                                 </a>
                             </div>

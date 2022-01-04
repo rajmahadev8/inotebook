@@ -9,11 +9,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField'
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { useHistory } from 'react-router-dom';
 
 const Notes = () => {
     //updateNotes
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
+    const history = useHistory();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const handleClickOpen = () => {
         setOpen(true);
@@ -29,7 +31,12 @@ const Notes = () => {
     //Add notes
     const {notes, fetchNote, editNote} = context;
     useEffect(() => {
-        fetchNote();
+        if(localStorage.getItem('token')){
+            fetchNote();
+        }else{
+            history.push('/login');
+        }
+        //eslint-disable-next-line
     }, [])
     const ref = useRef(null);
     const [note, setNote] = useState({id:"", etitle: "", edescription: "", etag: "" })

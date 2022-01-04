@@ -74,9 +74,9 @@ const Signup = () => {
                             <TextField
                                 fullWidth
                                 name="cpassword"
-                                nputProps={{ minLength: 5 }}
+                                inputProps={{ minLength: 5 }}
                                 required
-                                id="outlined-password-input"
+                                id="c-outlined-password-input"
                                 label="Confirm Password"
                                 type="password"
                                 value={credentials.cpassword}
