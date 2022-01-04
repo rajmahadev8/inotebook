@@ -8,6 +8,11 @@ import img from './iNotebook.png'
 const Signup = () => {
     const host = "http://localhost:4000"
     let history =   useHistory();
+    const [name, setName] = useState({enable:false,Validate:""});
+    const [email, setEmail] = useState({enable:false,Validate:""});
+    const [password, setPassword] = useState({enable:false,Validate:""});
+    const [cpassword, setCpassword] = useState({enable:false,Validate:""});
+
     const [credentials, setCredentials] = useState({name:"", email:"", password:"", cpassword:""})
     const signup = async(e)=>{
         e.preventDefault();
@@ -24,6 +29,31 @@ const Signup = () => {
               //redirect
               localStorage.setItem('token', json.authToken);
               history.push('/')
+          }else{
+            if(credentials.name===""){
+                setName({enable:true, Validate:"Name required"})
+            }else{
+                setName({enable:false, Validate:""})
+            }
+            if(credentials.email===""){
+                setEmail({enable:true, Validate:"Email required"})
+            }else{
+                setEmail({enable:false, Validate:""})
+            }
+            if(credentials.password===""){
+                setPassword({enable:true, Validate:"Password required"})
+            }else{
+                setPassword({enable:false, Validate:""})
+            }
+            if(credentials.cpassword===""){
+                setCpassword({enable:true, Validate:"Confirm Password required"})
+            }else{
+                setCpassword({enable:false, Validate:""})
+            }
+            if(credentials.password!==credentials.cpassword){
+                setCpassword({enable:true, Validate:"Password doesn't match"})
+                setPassword({enable:true, Validate:"Password doesn't match"})
+            }
           }
         }
     const onChange = (e)=>{
@@ -31,7 +61,7 @@ const Signup = () => {
     }
     return (
         <div className='' style={{backgroundImage:`url(${img})`, backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
-        <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{height: "89vh"}}>
+        <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{height: "91vh"}}>
             <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 bg-white ">
                 <div>
                     <img
@@ -51,20 +81,22 @@ const Signup = () => {
                     <input type="hidden" name="remember" defaultValue="true" />
                     <div className="-space-y-px">
                         <div className='mb-3'>
-                           <TextField fullWidth name="name" label="Name" onChange={onChange} required id="Name" value={credentials.name}/>
+                           <TextField fullWidth name="name" label="Name" error = {name.enable} onChange={onChange}  id="Name" value={credentials.name} helperText={name.Validate}/>
                         </div>
                         <div className='mb-3'> 
-                            <TextField fullWidth name="email" label="Email" onChange={onChange} required id="Email" value={credentials.email}/>
+                            <TextField fullWidth name="email" error = {email.enable} label="Email" onChange={onChange}  id="Email" value={credentials.email} helperText={email.Validate}/>
                         </div>
                         <div className='mb-3'>
                             <TextField
                                 fullWidth
+                                error = {password.enable}
                                 name="password"
                                 inputProps={{ minLength: 5 }}
-                                required
+                                // required
                                 id="outlined-password-input"
                                 label="Password"
                                 type="password"
+                                helperText={password.Validate}
                                 value={credentials.password}
                                 onChange={onChange}
                                 autoComplete="current-password"
@@ -74,12 +106,14 @@ const Signup = () => {
                             <TextField
                                 fullWidth
                                 name="cpassword"
+                                error = {cpassword.enable}
                                 inputProps={{ minLength: 5 }}
-                                required
+                                // required
                                 id="c-outlined-password-input"
                                 label="Confirm Password"
                                 type="password"
                                 value={credentials.cpassword}
+                                helperText={cpassword.Validate}
                                 onChange={onChange}
                                 autoComplete="current-password"
                             />

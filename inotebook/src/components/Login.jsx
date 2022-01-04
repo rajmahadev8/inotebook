@@ -6,15 +6,13 @@ import gif from './iNotebook.gif'
 import img from './iNotebook.png'
 
 const Login = () => {
-    // const [alert, setAlert] = useState({enable:false})
-    // const [validation, setValidation] = useState({emailError:"",passwordError:""})
+    const [alert, setAlert] = useState({emailEnable:false, passwordEnable:false})
+    const [validation, setValidation] = useState({emailError:"",passwordError:""})
     const host = "http://localhost:4000"
     let history =   useHistory();
     const [credentials, setCredentials] = useState({email:"",password:""})
     const login = async(e)=>{
-        // if(!alert.enable){
-        //     setAlert({enable:true})
-        // }else{setAlert({enable:false})}
+        
         e.preventDefault();
         const response = await fetch(`${host}/api/auth/login`, {
             method: 'POST',
@@ -31,6 +29,35 @@ const Login = () => {
               history.push('/')
           }
           else{
+            if(credentials.email==="" && credentials.password===""){
+                console.log("activate1")
+                setAlert({emailEnable:true, passwordEnable:true})
+                setValidation({emailError:"Email Required", passwordError:"Password Required"})
+            }
+            
+            else if(credentials.email===""){
+                console.log("activate3")
+                setAlert({emailEnable:true})
+                setValidation({emailError:"Email Required"})
+                console.log()
+            }
+            // else if(!(credentials.email==="")){
+            //     console.log("activate4")
+            //     setAlert({enable:false})
+            //     setValidation({emailError:""}) }
+            else if(credentials.password===""){
+                console.log("activate5")
+                setValidation({passwordError:"Password Required"})
+                setAlert({passwordEnable:true})
+            // }else if(!(credentials.password==="")){
+            //     console.log("activate6")
+            //     setValidation({passwordError:""})
+            //     setAlert({passwordEnable:false})
+            }
+
+                // if(!alert.enable){
+                //     setAlert({enable:true})
+                // }else{setAlert({enable:false})}
             //   if(!json.errors[0].msg){
             //     console.log(json.errors[0].msg)
             //     setValidation({emailError:json.errors[0].msg})
@@ -51,7 +78,7 @@ const Login = () => {
 
     return (
         <div className='' style={{backgroundImage:`url(${img})`, backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
-            <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 " style={{ height: "89vh" }}>
+            <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 " style={{ height: "85vh" }}>
                 <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 bg-white">
                     <div>
                         <img
@@ -71,12 +98,12 @@ const Login = () => {
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="-space-y-px">
                             <div className='mb-3'>
-                                <TextField  fullWidth name="email" label="Email" id="Email" value={credentials.email}  onChange={onChange}/>
+                                <TextField  fullWidth name="email" error = {alert.emailEnable} label="Email" id="Email" value={credentials.email} helperText={validation.emailError} onChange={onChange}/>
                             </div>
                             <div>
                                 <TextField
                                     fullWidth
-                                    // error = {alert.enable}
+                                    error = {alert.passwordEnable}
                                     name="password"
                                     id="outlined-password-input"
                                     label="Password"
@@ -84,7 +111,7 @@ const Login = () => {
                                     value={credentials.password}
                                     autoComplete="current-password"
                                     onChange={onChange}
-                                    // helperText={validation.passwordError}
+                                    helperText={validation.passwordError}
                                 />
                             </div>
                         </div>
