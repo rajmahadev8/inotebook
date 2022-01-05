@@ -6,8 +6,8 @@ import gif from './iNotebook.gif'
 import img from './iNotebook.png'
 
 const Login = () => {
-    const [alert, setAlert] = useState({emailEnable:false, passwordEnable:false})
-    const [validation, setValidation] = useState({emailError:"",passwordError:""})
+    const [email, setEmail] = useState({enable:false, validation:""})
+    const [password, setPassword] = useState({enable:false,validation:""})
     const host = "http://localhost:4000"
     let history =   useHistory();
     const [credentials, setCredentials] = useState({email:"",password:""})
@@ -29,46 +29,27 @@ const Login = () => {
               history.push('/')
           }
           else{
-            if(credentials.email==="" && credentials.password===""){
-                console.log("activate1")
-                setAlert({emailEnable:true, passwordEnable:true})
-                setValidation({emailError:"Email Required", passwordError:"Password Required"})
+            if(credentials.email===""){
+                setEmail({enable:true, validation:"Email required"})
+            }else{
+                setEmail({enable:false, validation:""})
             }
-            
-            else if(credentials.email===""){
-                console.log("activate3")
-                setAlert({emailEnable:true})
-                setValidation({emailError:"Email Required"})
-                console.log()
+            if(credentials.password===""){
+                setPassword({enable:true, validation:"Password required"})
+            }else{
+                setPassword({enable:false, validation:""})
             }
-            // else if(!(credentials.email==="")){
-            //     console.log("activate4")
-            //     setAlert({enable:false})
-            //     setValidation({emailError:""}) }
-            else if(credentials.password===""){
-                console.log("activate5")
-                setValidation({passwordError:"Password Required"})
-                setAlert({passwordEnable:true})
-            // }else if(!(credentials.password==="")){
-            //     console.log("activate6")
-            //     setValidation({passwordError:""})
-            //     setAlert({passwordEnable:false})
+            if(credentials.email!=="" && credentials.password!==""){
+                if(!json.verifyEmail){
+                    setEmail({enable:true, validation:"Email not registered"});
+                }
+                else{
+                    setPassword({enable:true, validation:"Incorrect Password"});
+                }
+                // setPassword({enable:true, validation:"Incorrect Password"})
+
             }
 
-                // if(!alert.enable){
-                //     setAlert({enable:true})
-                // }else{setAlert({enable:false})}
-            //   if(!json.errors[0].msg){
-            //     console.log(json.errors[0].msg)
-            //     setValidation({emailError:json.errors[0].msg})
-            //   }else if(!json.errors[1].msg){
-            //     console.log(json.errors[1].msg)
-            //     setValidation({passwordError:json.errors[1].msg})
-            //   }else{
-            //     console.log(json.errors[0].msg, json.errors[1].msg )
-            //     setValidation({emailError:json.errors[0].msg, passwordError:json.errors[1].msg})
-            //   }
-            //   console.log(json.errors[0].msg,json.errors[1].msg)
           }
         }
     const onChange = (e)=>{
@@ -78,7 +59,7 @@ const Login = () => {
 
     return (
         <div className='' style={{backgroundImage:`url(${img})`, backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
-            <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 " style={{ height: "85vh" }}>
+            <div className="min-h-full flex items-center justify-center pb-6 pt-10 px-4 sm:px-6 lg:px-8 " style={{ height: "86vh" }}>
                 <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 bg-white">
                     <div>
                         <img
@@ -98,12 +79,12 @@ const Login = () => {
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="-space-y-px">
                             <div className='mb-3'>
-                                <TextField  fullWidth name="email" error = {alert.emailEnable} label="Email" id="Email" value={credentials.email} helperText={validation.emailError} onChange={onChange}/>
+                                <TextField  fullWidth name="email" error = {email.enable} label="Email" id="Email" value={credentials.email} helperText={email.validation} onChange={onChange}/>
                             </div>
                             <div>
                                 <TextField
                                     fullWidth
-                                    error = {alert.passwordEnable}
+                                    error = {password.enable}
                                     name="password"
                                     id="outlined-password-input"
                                     label="Password"
@@ -111,7 +92,7 @@ const Login = () => {
                                     value={credentials.password}
                                     autoComplete="current-password"
                                     onChange={onChange}
-                                    helperText={validation.passwordError}
+                                    helperText={password.validation}
                                 />
                             </div>
                         </div>

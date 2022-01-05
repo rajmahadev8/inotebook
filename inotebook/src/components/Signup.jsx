@@ -53,6 +53,14 @@ const Signup = () => {
             if(credentials.password!==credentials.cpassword){
                 setCpassword({enable:true, Validate:"Password doesn't match"})
                 setPassword({enable:true, Validate:"Password doesn't match"})
+            }else{
+                setCpassword({enable:true, Validate:"Password doesn't match"})
+                setPassword({enable:true, Validate:"Password doesn't match"})
+            }
+            if(credentials.email!==""){
+                if(!json.verifyEmail){
+                    setEmail({enable:true, Validate:"Email Already Exist"})
+                }
             }
           }
         }
@@ -61,7 +69,7 @@ const Signup = () => {
     }
     return (
         <div className='' style={{backgroundImage:`url(${img})`, backgroundRepeat:"no-repeat", backgroundPosition:"center", backgroundSize:"cover"}}>
-        <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{height: "91vh"}}>
+        <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{height: ""}}>
             <div className="max-w-md w-full space-y-8 rounded-md shadow-xl p-4 bg-white ">
                 <div>
                     <img

@@ -6,14 +6,14 @@ const User = require('../models/User');
 var jwt = require('jsonwebtoken');
 var fetchuser = require('../middleware/fetchuser');
 const JWT_SECRET = "iNotebook"
-let success=false;
 
 //Route 1 :- Create a user using: POST "/api/auth/createuser". No Login Required
 router.post('/createuser', [body('name').isLength({ min: 3 }),
                             body('email', 'Enter a Valid Email').isEmail(),
                             body('password', 'Password length must be atleast 5 characters').isLength({ min: 5 })],
     async (req, res) => {
-        
+        let success=false;
+        let verifyEmail=false;
         //If there are errors return Bad request and errors
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -22,8 +22,9 @@ router.post('/createuser', [body('name').isLength({ min: 3 }),
         try {//Find the User exists or not
             let user = await User.findOne({ email: req.body.email });
             if (user) {
-                return res.status(400).json({ error: "Sorry a user with this email already exists" });
+                return res.status(400).json({verifyEmail, error: "Sorry a user with this email already exists" });
             }
+            verifyEmail=true;
             //Encrypting Password
             const salt = await bcrypt.genSalt(10);
             secPass = await bcrypt.hash(req.body.password, salt);
@@ -53,8 +54,10 @@ router.post('/createuser', [body('name').isLength({ min: 3 }),
 
 //Route 2 :- Authenticate a User using: POST "/api/auth/login". No Login Required
 router.post('/login', [body('email', 'Enter a Valid Email').isEmail(),
-                            body('password', 'Password Cannot be Blank').isLength({ min: 5 })],
+                            body('password', 'Password Cannot be Blank').isLength({ min: 3 })],
         async (req,res)=>{
+            let success=false;
+            let verifyEmail=false;
 
          //If there are errors return Bad request and errors
             const errors = validationResult(req);
@@ -65,11 +68,12 @@ router.post('/login', [body('email', 'Enter a Valid Email').isEmail(),
             try {
                 let user = await User.findOne({email});
                 if (!user) {
-                    return res.status(400).json({ success, error: "Please try login with correct credentials" });
+                    return res.status(400).json({ verifyEmail, success, error: "Please try login with correct credentials" });
                 }
+                verifyEmail=true;
                 const passwordCompare = await bcrypt.compare(password,user.password);
                 if(!passwordCompare){
-                    return res.status(400).json({ success, error: "Please try login with correct credentials" });
+                    return res.status(400).json({ verifyEmail, success, error: "Please try login with correct credentials" });
                 }
 
                 const data = {

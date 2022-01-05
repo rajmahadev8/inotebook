@@ -105,8 +105,8 @@ const Notes = () => {
 
             {/* <UpdateNotes ref={ref}/> */}
 
-            <div className="row my-5 d-flex justify-content-center align-center">
-                <h3 className='text-center text-3xl  font-bold	mb-4'>Your Notes</h3>
+            <div className="row my-2 d-flex justify-content-center align-center">
+                <h3 className='text-center text-3xl  font-bold	mb-2'>Your Notes</h3>
                 {notes.length===0 && 'No notes to be Display'}
                 {notes.map((notes) => {
                     return <NoteItem key={notes._id} notes={notes} currentNote={note} updateNote={updateNote}/>
