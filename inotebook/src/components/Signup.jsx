@@ -50,13 +50,13 @@ const Signup = () => {
             }else{
                 setCpassword({enable:false, Validate:""})
             }
-            if(credentials.password!==credentials.cpassword){
-                setCpassword({enable:true, Validate:"Password doesn't match"})
-                setPassword({enable:true, Validate:"Password doesn't match"})
-            }else{
-                setCpassword({enable:true, Validate:"Password doesn't match"})
-                setPassword({enable:true, Validate:"Password doesn't match"})
-            }
+            // if(credentials.password!==credentials.cpassword){
+            //     setCpassword({enable:true, Validate:"Password doesn't match"})
+            //     setPassword({enable:true, Validate:"Password doesn't match"})
+            // }else{
+            //     setCpassword({enable:true, Validate:"Password doesn't match"})
+            //     setPassword({enable:true, Validate:"Password doesn't match"})
+            // }
             if(credentials.email!==""){
                 if(!json.verifyEmail){
                     setEmail({enable:true, Validate:"Email Already Exist"})
